@@ -29,7 +29,7 @@ class Server {
         this.app.use(express.json())
 
         // ruta publica
-        this.app.use(express.static('chat/build/'))
+        this.app.use(express.static('public'))
 
     }
 
