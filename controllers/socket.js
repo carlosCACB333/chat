@@ -10,8 +10,8 @@ const disconnectedUser = async (uid) => {
 }
 
 
-const listUsers = async () => {
-    return await User.find({ status: true }).sort({ 'online': -1, lastLogin: -1 }).limit(6);
+const listUsers = async (uid) => {
+    return await User.find({ status: true, }).populate('followers').populate('following').sort({ 'online': -1, lastLogin: -1 }).limit(6);
 }
 
 const saveMessage = async (msg) => {

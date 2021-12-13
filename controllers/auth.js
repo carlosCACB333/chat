@@ -6,7 +6,7 @@ const authLogin = async (req, res) => {
     const { username, password } = req.body;
     try {
         // validar username
-        const user = await User.findOne({ username })
+        const user = await User.findOne({ username }).populate('followers').populate('following')
         if (!user) { return res.status(400).json({ 'username': 'El usuario no existe' }) }
         // validar password
         const passValid = bcrypt.compareSync(password, user.password)
@@ -62,7 +62,7 @@ const searchUser = async (req, res) => {
         ],
         _id: { $ne: user._id },
         status: true
-    }).sort({ 'online': -1 }).limit(6)
+    }).populate('followers').populate('following').sort({ 'online': -1 }).limit(6)
 
     res.json(users)
 }

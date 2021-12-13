@@ -10,7 +10,9 @@ const UserSchema = Schema({
     lastLogin: { type: Date, default: new Date() },
     status: { type: Boolean, default: true },
     picture: { type: String },
-    gender: { type: String, require: true, enum: ['Masculino', 'Femenino', 'Otro'], default: 'Otro' }
+    gender: { type: String, require: true, enum: ['Masculino', 'Femenino', 'Otro'], default: 'Otro' },
+    followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 }, { timestamps: true })
 
 UserSchema.methods.toJSON = function () {

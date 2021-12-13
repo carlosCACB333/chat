@@ -6,7 +6,7 @@ const cors = require('cors')
 const { dbconexion } = require('../db/db-config');
 const { checkToken } = require('../helpers/web-token');
 const { connectedUser, disconnectedUser, listUsers, saveMessage, listMessages } = require('../controllers/socket');
-
+const fileUpload = require('express-fileupload');
 
 class Server {
 
@@ -31,11 +31,20 @@ class Server {
         // ruta publica
         this.app.use(express.static('public'))
 
+        //configurando carga de archivos 
+        this.app.use(fileUpload({
+            useTempFiles: true,
+            tempFileDir: '/tmp/',
+            createParentPath: true,
+        }));
+
     }
 
     routes() {
         this.app.use('/api/auth', require('../routes/auth'));
         this.app.use('/api/message', require('../routes/message'));
+        this.app.use('/api/post', require('../routes/posts'));
+        this.app.use('/api/user', require('../routes/users'));
     }
 
     socketsEvents() {
@@ -54,7 +63,7 @@ class Server {
             socket.join(uid)
 
             // TODO: emitir todo los usuarios conectados
-            this.io.emit('list-users', await listUsers())
+            this.io.emit('list-users', await listUsers(uid))
             // emitit todo los mensajes del usuarios
             this.io.to(uid).emit('list-messages', await listMessages(uid))
             // TODO: escuchar cuando un user manda mensaje
