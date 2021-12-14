@@ -7,7 +7,7 @@ const { dbconexion } = require('../db/db-config');
 const { checkToken } = require('../helpers/web-token');
 const { connectedUser, disconnectedUser, listUsers, saveMessage, listMessages } = require('../controllers/socket');
 const fileUpload = require('express-fileupload');
-
+const path = require('path');
 class Server {
 
     constructor() {
@@ -45,6 +45,7 @@ class Server {
         this.app.use('/api/message', require('../routes/message'));
         this.app.use('/api/post', require('../routes/posts'));
         this.app.use('/api/user', require('../routes/users'));
+        this.app.get('/*', (req, res) => { res.sendFile(path.join(__dirname, '../public', 'index.html')); });
     }
 
     socketsEvents() {
