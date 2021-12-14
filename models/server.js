@@ -7,7 +7,6 @@ const { dbconexion } = require('../db/db-config');
 const { checkToken } = require('../helpers/web-token');
 const { connectedUser, disconnectedUser, listUsers, saveMessage, listMessages } = require('../controllers/socket');
 const fileUpload = require('express-fileupload');
-const path = require('path');
 
 class Server {
 
@@ -30,10 +29,7 @@ class Server {
         this.app.use(express.json())
 
         // ruta publica
-        // this.app.use(express.static('public'))
-        console.log(__dirname);
-        this.app.use(express.static('public'));
-        this.app.get('/*', (req, res) => { res.sendFile(path.join(__dirname, '../public', 'index.html')); });
+        this.app.use(express.static('public'))
 
         //configurando carga de archivos 
         this.app.use(fileUpload({
